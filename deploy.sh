@@ -7,8 +7,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PUBLIC_DIR="$SCRIPT_DIR/output/public"
 
-# NAS mount point on this Mac
-NAS_MOUNT="${NAS_MOUNT:-/Volumes/evconduit}"
+# NAS mount point (use home dir to avoid needing sudo)
+NAS_MOUNT="${NAS_MOUNT:-$HOME/.nas-evconduit}"
 NAS_PATH="${NAS_PATH:-$NAS_MOUNT/evconduit-news}"
 NAS_USER="${NAS_USER:-}"
 NAS_PASS="${NAS_PASS:-}"
