@@ -18,12 +18,12 @@ if [ ! -d "$NAS_MOUNT/evconduit-news" ]; then
     echo "Mounting NAS..."
     mkdir -p "$NAS_MOUNT"
     if [ -n "$NAS_USER" ] && [ -n "$NAS_PASS" ]; then
-        mount -t smbfs "//${NAS_USER}:${NAS_PASS}@192.168.1.235/evconduit" "$NAS_MOUNT" 2>/dev/null || {
+        mount_smbfs "//${NAS_USER}:${NAS_PASS}@192.168.1.235/evconduit" "$NAS_MOUNT" 2>/dev/null || {
             echo "Mount failed. Check credentials or mount manually."
             exit 1
         }
     else
-        mount -t smbfs //192.168.1.235/evconduit "$NAS_MOUNT" 2>/dev/null || {
+        mount_smbfs //192.168.1.235/evconduit "$NAS_MOUNT" 2>/dev/null || {
             echo "Mount failed. Set NAS_USER and NAS_PASS, or mount manually."
             exit 1
         }
