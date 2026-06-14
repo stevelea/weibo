@@ -10,6 +10,7 @@ theme = "evconduit"
 [taxonomies]
   category = "categories"
   tag = "tags"
+  source = "sources"
 
 [markup]
   [markup.goldmark]

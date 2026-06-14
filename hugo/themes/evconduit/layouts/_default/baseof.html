@@ -127,6 +127,37 @@
       margin-bottom: 0.6rem;
     }
     .post-card p { font-size: 0.92rem; color: var(--muted); line-height: 1.6; }
+    .source-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.1rem 0.5rem;
+      border-radius: 10px;
+      margin-left: 0.4rem;
+      vertical-align: middle;
+    }
+    .source-badge.weibo { background: #fef3c7; color: #92400e; }
+    .source-badge.supertopic { background: #fce7f3; color: #9d174d; }
+    .source-badge.bilibili { background: #dbeafe; color: #1e40af; }
+    .source-badge.zhihu { background: #e0e7ff; color: #3730a3; }
+    .source-filters {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .source-filter {
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0.35rem 0.9rem;
+      border-radius: 20px;
+      text-decoration: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      transition: all 0.15s;
+    }
+    .source-filter:hover, .source-filter.active { background: var(--accent); color: white; border-color: var(--accent); }
     .post-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.7rem; }
     .post-tag {
       display: inline-block;
@@ -268,6 +299,7 @@
         <a href="{{ $.Site.BaseURL }}categories/car/">Cars</a>
         <a href="{{ $.Site.BaseURL }}categories/robot/">Robots</a>
         <a href="{{ $.Site.BaseURL }}categories/flying_car/">Flying Cars</a>
+        <a href="{{ $.Site.BaseURL }}sources/bilibili/" style="color:#1e40af">B站</a>
       </nav>
     </div>
   </header>

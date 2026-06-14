@@ -32,8 +32,11 @@
     ],
     "classes": [
       "active",
+      "bilibili",
       "car",
+      "empty-state",
       "financial",
+      "general",
       "header-inner",
       "hero",
       "logo",
@@ -47,11 +50,18 @@
       "post-relevance",
       "post-tag",
       "post-tags",
+      "robot",
+      "source-badge",
       "source-box",
+      "source-filter",
+      "source-filters",
+      "supertopic",
       "video-card",
       "video-card-link",
       "video-play",
-      "weibo-image"
+      "weibo",
+      "weibo-image",
+      "zhihu"
     ],
     "ids": [
       "latest-xpeng-news-from-the-weibo-community"

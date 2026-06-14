@@ -17,6 +17,9 @@
         <div class="post-meta">
           {{ .Date.Format "Jan 2, 2006 15:04" }} CST &middot;
           {{ .Params.source_author }}
+          {{ with .Params.source }}
+            <span class="source-badge {{ . | lower }}">{{ . }}</span>
+          {{ end }}
         </div>
         {{ with .Description }}<p>{{ . }}</p>{{ end }}
         <div class="post-tags">

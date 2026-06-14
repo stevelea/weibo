@@ -53,14 +53,25 @@ class HugoPublisher:
         """Build YAML frontmatter for a Hugo post."""
         date_str = post.published_at.strftime("%Y-%m-%dT%H:%M:%S+08:00")
         summary = (post.summary_en or "").replace('"', "'")
+        # Map internal source codes to display names and taxonomy values
+        source_map = {
+            "rsshub": ("Weibo", "weibo"),
+            "supertopic": ("超话", "supertopic"),
+            "bilibili": ("Bilibili", "bilibili"),
+            "zhihu": ("Zhihu", "zhihu"),
+            "crawl": ("Weibo", "weibo"),
+        }
+        source_name, source_slug = source_map.get(post.source, ("Weibo", "weibo"))
+
         fm = f"""---
 title: "{post.title_en or 'Untitled'}"
 description: "{summary}"
 date: {date_str}
 draft: false
 categories: ["{post.category or 'general'}"]
-tags: ["xpeng", "{post.category or 'general'}", "weibo"]
-source: "Weibo"
+tags: ["xpeng", "{post.category or 'general'}"]
+sources: ["{source_slug}"]
+source: "{source_name}"
 source_author: "{post.author_name}"
 source_url: "{post.url}"
 relevance: {post.relevance_score or 0}
