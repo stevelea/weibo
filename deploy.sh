@@ -32,7 +32,7 @@ echo "Build complete."
 # Sync to NAS via local NFS
 echo "Syncing $PUBLIC_DIR/ → $NFS_TARGET/"
 mkdir -p "$NFS_TARGET"
-rsync -rltDv --delete --no-perms --no-owner --no-group "$PUBLIC_DIR/" "$NFS_TARGET/"
+rsync -rltDv --delete --no-perms --no-owner --no-group --no-times --ignore-errors "$PUBLIC_DIR/" "$NFS_TARGET/"
 
 # Cleanup old images locally (keep 90 days)
 find "$SCRIPT_DIR/output/static/images" -type f -mtime +90 -delete 2>/dev/null || true
