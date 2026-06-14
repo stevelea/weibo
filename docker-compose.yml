@@ -18,6 +18,7 @@ services:
       - CACHE_EXPIRE=300
       - REQUEST_TIMEOUT=30
       - NODE_ENV=production
+      # - ZHIHU_COOKIES=z_c0="your_cookie_here"  # uncomment after getting cookie
     healthcheck:
       test: ["CMD", "curl", "-sf", "http://localhost:1200/weibo/user/5710264970"]
       interval: 60s
