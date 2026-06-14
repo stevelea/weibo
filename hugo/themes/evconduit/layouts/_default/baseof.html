@@ -259,15 +259,15 @@
   <header>
     <div class="header-inner">
       <div>
-        <a href="{{ "/" | absURL }}" class="logo">EV<span>Conduit</span></a>
+        <a href="{{ $.Site.BaseURL }}" class="logo">EV<span>Conduit</span></a>
         <span class="logo-sub">XPeng Intelligence</span>
       </div>
       <nav>
-        <a href="{{ "/" | absURL }}" class="active">Home</a>
-        <a href="{{ "/posts/" | absURL }}">Feed</a>
-        <a href="{{ "/categories/car/" | absURL }}">Cars</a>
-        <a href="{{ "/categories/robot/" | absURL }}">Robots</a>
-        <a href="{{ "/categories/flying_car/" | absURL }}">Flying Cars</a>
+        <a href="{{ $.Site.BaseURL }}" class="active">Home</a>
+        <a href="{{ $.Site.BaseURL }}posts/">Feed</a>
+        <a href="{{ $.Site.BaseURL }}categories/car/">Cars</a>
+        <a href="{{ $.Site.BaseURL }}categories/robot/">Robots</a>
+        <a href="{{ $.Site.BaseURL }}categories/flying_car/">Flying Cars</a>
       </nav>
     </div>
   </header>
