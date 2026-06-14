@@ -1,23 +1,16 @@
 #!/bin/bash
-# Deploy Hugo static site directly to NAS via NFS (local network, fast)
-# evconduit.com serves from the same NAS mount at /mnt/nas-backup/evconduit-news/
+# Deploy Hugo static site directly to evconduit.com via SSH (Tailscale)
+# evconduit.com serves from /mnt/volume-ssd/evconduit-news/
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PUBLIC_DIR="$SCRIPT_DIR/output/public"
 
-# Local NFS mount of the NAS
-NFS_MOUNT="${NFS_MOUNT:-$HOME/nas-evconduit}"
-NFS_TARGET="${NFS_TARGET:-$NFS_MOUNT/evconduit-news}"
-NFS_VOLUME="${NFS_VOLUME:-/volume/4ec2cde2-4416-4372-b4f7-2adc8a4f0ea0/.srv/.unifi-drive/evconduit/.data}"
-
-# Mount NFS if not already mounted
-if ! mount | grep -q "$NFS_MOUNT"; then
-    echo "Mounting NFS..."
-    mkdir -p "$NFS_MOUNT"
-    sudo mount -t nfs -o resvport,nolocks,locallocks 192.168.1.235:"$NFS_VOLUME" "$NFS_MOUNT"
-fi
+# evconduit.com server over Tailscale
+EV_HOST="${EV_HOST:-100.113.60.59}"
+EV_USER="${EV_USER:-root}"
+EV_PATH="${EV_PATH:-/mnt/volume-ssd/evconduit-news}"
 
 # Always rebuild Hugo in production mode (via Docker, no local install needed)
 echo "Building Hugo site (production, baseURL: /news/)..."
@@ -29,26 +22,23 @@ docker run --rm \
     hugo --minify --environment production --baseURL "https://www.evconduit.com/news/"
 echo "Build complete."
 
-# Sync to NAS via local NFS
-echo "Syncing $PUBLIC_DIR/ → $NFS_TARGET/"
-mkdir -p "$NFS_TARGET"
-rsync -rltDv --delete --no-perms --no-owner --no-group --no-times --ignore-errors "$PUBLIC_DIR/" "$NFS_TARGET/"
+# Sync to evconduit.com via SSH
+echo "Syncing $PUBLIC_DIR/ → $EV_USER@$EV_HOST:$EV_PATH/"
+ssh -o StrictHostKeyChecking=no "$EV_USER@$EV_HOST" "mkdir -p $EV_PATH"
+rsync -avz --delete \
+    -e "ssh -o StrictHostKeyChecking=no" \
+    "$PUBLIC_DIR/" \
+    "$EV_USER@$EV_HOST:$EV_PATH/"
 
-# Cleanup old images locally (keep 90 days)
-find "$SCRIPT_DIR/output/static/images" -type f -mtime +90 -delete 2>/dev/null || true
-
-# Warm Cloudflare cache for recently published pages
+# Warm Cloudflare cache
 echo "Warming Cloudflare cache..."
 find "$PUBLIC_DIR/posts" -name "index.html" -mmin -15 | while read -r post; do
     rel_url="/news${post#$PUBLIC_DIR}"
     rel_url="${rel_url%/index.html}/"
     curl -s -o /dev/null "https://www.evconduit.com${rel_url}" &
 done
-# Also warm the homepage
 curl -s -o /dev/null "https://www.evconduit.com/news/" &
 wait
 echo "Cache warmed."
 
-FILE_COUNT=$(find "$NFS_TARGET" -type f | wc -l | tr -d ' ')
-SIZE=$(du -sh "$NFS_TARGET" | awk '{print $1}')
-echo "Deployed $FILE_COUNT files ($SIZE) → https://www.evconduit.com/news/"
+echo "Deployed → https://www.evconduit.com/news/"
