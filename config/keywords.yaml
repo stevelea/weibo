@@ -1,0 +1,86 @@
+# Keyword search configuration for crawl4weibo deep scraping
+# These keyword groups are searched periodically to catch content
+# from accounts not in the monitored list
+
+keywords:
+  # XPeng brand names
+  - group: brand_names
+    terms:
+      - "小鹏"
+      - "小鹏汽车"
+      - "XPeng"
+      - "Xpeng Motors"
+    priority: high
+
+  # XPeng vehicle models
+  - group: vehicle_models
+    terms:
+      - "小鹏G6"
+      - "小鹏G9"
+      - "小鹏P7"
+      - "小鹏P5"
+      - "小鹏X9"
+      - "小鹏MONA"
+      - "小鹏G7"
+      - "小鹏汇天"
+    priority: high
+
+  # XPeng robotics / flying car
+  - group: robotics
+    terms:
+      - "小鹏机器人"
+      - "小鹏飞行汽车"
+      - "小鹏汇天"
+      - "小鹏机器马"
+      - "XPeng Robot"
+      - "XPeng flying car"
+    priority: high
+
+  # XPeng competitors (for market context)
+  - group: competitors
+    terms:
+      - "蔚来"
+      - "理想汽车"
+      - "比亚迪"
+      - "特斯拉"
+      - "小米汽车"
+      - "华为问界"
+    priority: low
+    note: "Only capture when XPeng is also mentioned"
+
+  # XPeng autonomous driving / VLA
+  - group: autonomous_driving
+    terms:
+      - "小鹏VLA"
+      - "VLA 2.0"
+      - "小鹏端到端"
+      - "小鹏智驾"
+      - "小鹏XNGP"
+      - "小鹏AI代驾"
+      - "小鹏NGP"
+      - "小鹏漫游"
+      - "小鹏VLA2.0"
+      - "小鹏视觉语言动作"
+      - "VLA大模型"
+      - "小鹏智驾评测"
+      - "小鹏智驾体验"
+      - "小鹏智驾OTA"
+      - "端到端智驾"
+    priority: high
+
+  # XPeng news / events
+  - group: news_events
+    terms:
+      - "小鹏财报"
+      - "小鹏发布会"
+      - "小鹏交付"
+      - "小鹏智驾"
+      - "小鹏XNGP"
+      - "小鹏超充"
+    priority: high
+
+# Deep scrape settings
+deep_scrape:
+  interval_minutes: 30
+  max_posts_per_search: 25
+  lookback_hours: 6

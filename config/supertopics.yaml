@@ -1,0 +1,16 @@
+# Weibo Super Topics (超话) to monitor for XPeng community content
+# These are community hubs where fans and owners post about XPeng
+# RSSHub route: /weibo/super_index/:id
+
+supertopics:
+  - id: "1008086b2a91552bca604612ce68abe0ec03ff"
+    name: "小鹏汽车"
+    priority: high
+
+# Add more super topics by finding their ID from the URL:
+#   https://weibo.com/p/{id}
+# Then test: curl http://localhost:1200/weibo/super_index/{id}
+
+# Poll settings
+poll_interval_minutes: 15
+max_posts_per_fetch: 20

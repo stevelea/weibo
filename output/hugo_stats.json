@@ -1,0 +1,60 @@
+{
+  "htmlElements": {
+    "tags": [
+      "a",
+      "article",
+      "body",
+      "br",
+      "div",
+      "figcaption",
+      "figure",
+      "footer",
+      "h1",
+      "h2",
+      "head",
+      "header",
+      "hr",
+      "html",
+      "img",
+      "li",
+      "link",
+      "main",
+      "meta",
+      "nav",
+      "p",
+      "script",
+      "section",
+      "span",
+      "strong",
+      "style",
+      "title",
+      "ul"
+    ],
+    "classes": [
+      "active",
+      "car",
+      "financial",
+      "header-inner",
+      "hero",
+      "logo",
+      "logo-sub",
+      "medium",
+      "post-card",
+      "post-card-header",
+      "post-list",
+      "post-meta",
+      "post-relevance",
+      "post-tag",
+      "post-tags",
+      "robot",
+      "source-box",
+      "video-card",
+      "video-card-link",
+      "video-play",
+      "weibo-image"
+    ],
+    "ids": [
+      "latest-xpeng-news-from-the-weibo-community"
+    ]
+  }
+}

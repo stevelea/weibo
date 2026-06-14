@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+
+# Data
+data/
+!data/.gitkeep
+
+# Hugo generated output
+output/public/
+output/resources/
+output/.hugo_build.lock
+output/content/posts/*.md
+output/static/images/
+
+# Environment
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+rsshub/node_modules/

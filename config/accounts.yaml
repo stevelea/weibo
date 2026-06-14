@@ -1,0 +1,66 @@
+# Weibo accounts to monitor for XPeng-related content
+# These accounts will be polled via RSSHub for new posts
+# UIDs verified working with RSSHub as of 2026-06-13
+
+accounts:
+  # XPeng Official
+  - uid: "5710264970"
+    name: "小鹏汽车"
+    category: official
+    priority: high
+
+  # Auto media / reviewers
+  - uid: "1761731257"
+    name: "汽车之家"
+    category: media
+    priority: medium
+
+  - uid: "2910918031"
+    name: "38号车评中心"
+    category: reviewer
+    priority: medium
+
+  # EV-focused media
+  - uid: "6331869199"
+    name: "电动知士"
+    category: ev_media
+    priority: high
+
+  # Tech media
+  - uid: "6105753431"
+    name: "量子位"
+    category: tech_media
+    priority: medium
+
+  # Community / general accounts (suggested)
+  - uid: "1839893273"
+    name: "Miracle行走"
+    category: community
+    priority: low
+
+  # XPeng executives
+  - uid: "7926776135"
+    name: "XP-Candice婷婷"
+    category: executive
+    priority: high
+
+  - uid: "1882934071"
+    name: "托马斯电火车"
+    category: executive
+    priority: high
+
+# --- Unverified accounts (need correct UIDs) ---
+# To add an account, find the UID from their profile URL (weibo.com/u/{uid})
+# Then test: curl http://localhost:1200/weibo/user/{uid}
+#
+# - 何小鹏 (XPeng CEO) — could not resolve UID via search
+# - 新车评
+# - 电动星球News
+# - 汽车洋葱圈
+# - 机器之心
+# - 小鹏汽车社区
+
+# RSSHub route template: /weibo/user/:uid
+# Full URL: http://rsshub:1200/weibo/user/{uid}
+rsshub_base_url: "http://rsshub:1200"
+poll_interval_minutes: 10

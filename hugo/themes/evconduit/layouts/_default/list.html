@@ -1,0 +1,33 @@
+{{ define "main" }}
+  <h1 style="font-size:1.5rem;font-weight:700;margin-bottom:1.5rem">{{ .Title }}</h1>
+  {{ if .Pages }}
+    <ul class="post-list">
+    {{ range .Pages.ByDate.Reverse }}
+      <li class="post-card">
+        <div class="post-card-header">
+          <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+          {{ with .Params.relevance }}
+            {{ if ge . 80 }}
+              <span class="post-relevance">{{ . }}</span>
+            {{ else }}
+              <span class="post-relevance medium">{{ . }}</span>
+            {{ end }}
+          {{ end }}
+        </div>
+        <div class="post-meta">
+          {{ .Date.Format "Jan 2, 2006 15:04" }} CST &middot;
+          {{ .Params.source_author }}
+        </div>
+        {{ with .Description }}<p>{{ . }}</p>{{ end }}
+        <div class="post-tags">
+          {{ range .Params.categories }}
+            <span class="post-tag {{ . }}">{{ replace . "_" " " }}</span>
+          {{ end }}
+        </div>
+      </li>
+    {{ end }}
+    </ul>
+  {{ else }}
+    <div class="empty-state"><p>No posts yet. The pipeline is warming up — check back soon.</p></div>
+  {{ end }}
+{{ end }}

@@ -1,0 +1,21 @@
+{{ define "main" }}
+<article>
+  <div class="post-meta" style="margin-bottom:0.5rem">
+    {{ .Date.Format "Jan 2, 2006 15:04" }} CST &middot;
+    {{ .Params.source_author }}
+    <div class="post-tags" style="display:inline-flex;margin-top:0">
+      {{ range .Params.categories }}
+        <span class="post-tag {{ . }}">{{ replace . "_" " " }}</span>
+      {{ end }}
+    </div>
+  </div>
+  <h1>{{ .Title }}</h1>
+
+  {{ .Content }}
+
+  <div class="source-box">
+    <strong>Original source:</strong> <a href="{{ .Params.source_url }}" target="_blank" rel="noopener">@{{ .Params.source_author }} on Weibo</a><br>
+    <strong>Relevance:</strong> {{ .Params.relevance }}/100
+  </div>
+</article>
+{{ end }}
