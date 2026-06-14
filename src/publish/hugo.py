@@ -96,6 +96,8 @@ relevance: {post.relevance_score or 0}
             lines.append(post.summary_en)
             lines.append("")
 
+        base_path = os.environ.get("SITE_BASE_PATH", "")
+
         # Images from the original Weibo post (use local paths if available)
         if post.image_urls:
             try:
@@ -113,7 +115,6 @@ relevance: {post.relevance_score or 0}
                     except (json.JSONDecodeError, TypeError):
                         pass
 
-                base_path = os.environ.get("SITE_BASE_PATH", "")
                 for i, img_url in enumerate(urls[:4]):
                     raw_src = local_paths[i] if i < len(local_paths) and local_paths[i] else img_url
                     src = f"{base_path}{raw_src}" if raw_src.startswith("/images/") else raw_src

@@ -56,9 +56,12 @@ class ImageCaptioner:
     async def _download_image(self, url: str) -> tuple[Image.Image | None, bytes | None, str]:
         """Download an image, return (PIL Image, raw bytes, content_type)."""
         try:
+            referer = "https://weibo.com/"
+            if "hdslb.com" in url or "bilibili.com" in url:
+                referer = "https://www.bilibili.com/"
             resp = await self.http.get(
                 url,
-                headers={"Referer": "https://weibo.com/"},
+                headers={"Referer": referer},
             )
             resp.raise_for_status()
             content_type = resp.headers.get("content-type", "image/jpeg")
