@@ -38,6 +38,11 @@ accounts:
     category: community
     priority: low
 
+  - uid: "2100707663"
+    name: "聆听他内心的声音"
+    category: community
+    priority: medium
+
   # XPeng executives
   - uid: "7926776135"
     name: "XP-Candice婷婷"

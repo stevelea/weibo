@@ -41,6 +41,7 @@ class Config:
     rsshub_base_url: str = "http://rsshub:1200"
     poll_interval_minutes: int = 10
     supertopics: list[dict] = field(default_factory=list)
+    bilibili_accounts: list[Account] = field(default_factory=list)
 
 
 def load_config(config_dir: str | None = None) -> Config:
@@ -104,5 +105,20 @@ def load_config(config_dir: str | None = None) -> Config:
             data = yaml.safe_load(f)
         if data:
             config.supertopics = data.get("supertopics", [])
+
+    bilibili_path = base / "bilibili.yaml"
+    if bilibili_path.exists():
+        with open(bilibili_path) as f:
+            data = yaml.safe_load(f)
+        if data:
+            config.bilibili_accounts = [
+                Account(
+                    uid=str(a["uid"]),
+                    name=a["name"],
+                    category=a.get("category", "unknown"),
+                    priority=a.get("priority", "medium"),
+                )
+                for a in data.get("accounts", [])
+            ]
 
     return config

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import datetime
+import json
 import re
 from typing import Any
 
@@ -272,6 +273,55 @@ class RSSHubIngestor:
                 new_count += 1
 
         logger.info("rsshub.supertopic_ingested", topic=topic_name, new_posts=new_count)
+        return new_count
+
+    async def ingest_bilibili(self, db: Database, uid: str, account_name: str) -> int:
+        """Ingest posts from a Bilibili user's video feed. Returns count of new posts."""
+        url = f"{self.config.rsshub_base_url}/bilibili/user/video/{uid}"
+        try:
+            resp = await self.client.get(url)
+            resp.raise_for_status()
+        except httpx.HTTPError as e:
+            logger.warning("rsshub.bilibili_failed", account=account_name, error=str(e))
+            return 0
+
+        feed = feedparser.parse(resp.text)
+        if not feed.entries:
+            return 0
+
+        new_count = 0
+        for entry in feed.entries:
+            post_id = entry.get("id", entry.get("link", ""))
+            if not post_id:
+                continue
+
+            published = datetime.datetime.utcnow()
+            if hasattr(entry, "published_parsed") and entry.published_parsed:
+                published = datetime.datetime(*entry.published_parsed[:6])
+
+            content = entry.get("title", "") + "\n" + (entry.get("summary", entry.get("description", "")))
+            content = re.sub(r"<[^>]+>", "", content).strip()
+            if not content:
+                continue
+
+            post = Post(
+                weibo_id=f"bilibili-{post_id}",
+                source="bilibili",
+                author_name=account_name,
+                author_uid=uid,
+                content=content,
+                content_hash=Post.compute_hash(content),
+                video_urls=None,
+                video_page_urls=json.dumps([entry.get("link", "")]) if entry.get("link") else None,
+                video_posters=None,
+                url=entry.get("link", f"https://www.bilibili.com/video/{post_id}"),
+                published_at=published,
+            )
+            inserted = await db.insert_post(post)
+            if inserted:
+                new_count += 1
+
+        logger.info("rsshub.bilibili_ingested", account=account_name, new_posts=new_count)
         return new_count
 
     async def close(self) -> None:

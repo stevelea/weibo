@@ -1,0 +1,16 @@
+# Bilibili (B站) accounts to monitor for XPeng-related content
+# RSSHub route: /bilibili/user/video/:uid
+
+accounts:
+  # XPeng Official
+  - uid: "24674998"
+    name: "小鹏汽车"
+    category: official
+    priority: high
+
+# Add more Bilibili accounts to monitor XPeng reviewers/fans
+# Find UID from profile URL: space.bilibili.com/{uid}
+# Test: curl http://localhost:1200/bilibili/user/video/{uid}
+
+rsshub_base_url: "http://rsshub:1200"
+poll_interval_minutes: 15

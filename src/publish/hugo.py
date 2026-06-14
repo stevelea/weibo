@@ -159,11 +159,15 @@ relevance: {post.relevance_score or 0}
             except (json.JSONDecodeError, TypeError):
                 pass
 
-        # Full translated content (wrapped in <div> to avoid Hugo Goldmark buffer boundary bug)
+        # Full translated content — padded to avoid Hugo Goldmark buffer boundary bug
+        # Goldmark (Hugo's markdown renderer) has a bug where multibyte characters
+        # at certain 256-byte alignment boundaries cause "slice bounds out of range".
+        # Adding a trailing HTML comment pushes content past the dangerous boundaries.
         if post.content_en:
             lines.append('<div class="post-body">')
             lines.append(post.content_en)
             lines.append('</div>')
+            lines.append('<!-- avoid-goldmark-boundary: padding -->')
             lines.append("")
 
         # Source attribution

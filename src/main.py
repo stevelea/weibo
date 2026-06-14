@@ -57,6 +57,12 @@ class Pipeline:
                 st_count += await self.rsshub.ingest_supertopic(self.db, st["id"], st["name"])
             logger.info("cycle.supertopic_done", posts_ingested=st_count)
 
+            # Phase 1c: Ingest from Bilibili (B站)
+            bl_count = 0
+            for bl in self.config.bilibili_accounts:
+                bl_count += await self.rsshub.ingest_bilibili(self.db, bl.uid, bl.name)
+            logger.info("cycle.bilibili_done", posts_ingested=bl_count)
+
             # Phase 2: Ingest from crawl4weibo (keyword search)
             crawl_count = await self.crawler.ingest(self.db)
             logger.info("cycle.crawl_done", posts_ingested=crawl_count)
