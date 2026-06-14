@@ -299,10 +299,21 @@ class RSSHubIngestor:
             if hasattr(entry, "published_parsed") and entry.published_parsed:
                 published = datetime.datetime(*entry.published_parsed[:6])
 
-            content = entry.get("title", "") + "\n" + (entry.get("summary", entry.get("description", "")))
+            raw_html = entry.get("summary", entry.get("description", ""))
+            content = entry.get("title", "") + "\n" + raw_html
             content = re.sub(r"<[^>]+>", "", content).strip()
             if not content:
                 continue
+
+            # Extract Bilibili video thumbnail from media:thumbnail
+            poster_url = None
+            if hasattr(entry, "media_thumbnail") and entry.media_thumbnail:
+                poster_url = entry.media_thumbnail[0].get("url", None)
+            if not poster_url:
+                # Fallback: extract img src from description HTML
+                poster_match = re.search(r'<img[^>]+src="(https?://[^"]+)"', raw_html)
+                if poster_match:
+                    poster_url = poster_match.group(1)
 
             post = Post(
                 weibo_id=f"bilibili-{post_id}",
@@ -313,7 +324,7 @@ class RSSHubIngestor:
                 content_hash=Post.compute_hash(content),
                 video_urls=None,
                 video_page_urls=json.dumps([entry.get("link", "")]) if entry.get("link") else None,
-                video_posters=None,
+                video_posters=json.dumps([poster_url]) if poster_url else None,
                 url=entry.get("link", f"https://www.bilibili.com/video/{post_id}"),
                 published_at=published,
             )

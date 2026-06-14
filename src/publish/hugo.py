@@ -192,9 +192,10 @@ relevance: {post.relevance_score or 0}
             lines.append("")
 
         # Source attribution
+        source_label = SOURCE_LABELS.get(post.source, "Weibo")
         lines.append("---")
         lines.append("")
-        lines.append(f"**Source:** [@{post.author_name} on Weibo]({post.url})")
+        lines.append(f"**Source:** [@{post.author_name} on {source_label}]({post.url})")
         lines.append(f"**Published:** {post.published_at.strftime('%Y-%m-%d %H:%M')} CST")
         lines.append(f"**Category:** {post.category or 'general'} | **Relevance:** {post.relevance_score}/100")
 
