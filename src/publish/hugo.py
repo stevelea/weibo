@@ -145,7 +145,8 @@ relevance: {post.relevance_score or 0}
                         f'class="video-card-link">'
                     )
                     if poster:
-                        lines.append(f'<img src="{poster}" alt="Video thumbnail" loading="lazy">')
+                        poster_src = f"{base_path}{poster}" if poster.startswith("/images/") else poster
+                        lines.append(f'<img src="{poster_src}" alt="Video thumbnail" loading="lazy">')
                     lines.append('<span class="video-play">▶</span>')
                     lines.append('</a>')
                     lines.append(
