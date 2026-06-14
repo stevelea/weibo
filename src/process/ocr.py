@@ -122,13 +122,17 @@ class ImageCaptioner:
                 local_paths.append("")
                 continue
 
-            # Save image locally to Hugo static directory
+            # Resize and save image locally to Hugo static directory
             local_path = self._local_image_path(post_weibo_id, i, content_type)
             full_path = _os.path.join(static_dir, local_path.lstrip("/"))
             _os.makedirs(_os.path.dirname(full_path), exist_ok=True)
             try:
-                with open(full_path, "wb") as f:
-                    f.write(raw)
+                # Resize to max 1200px wide to save storage
+                w, h = image.size
+                if w > 1200:
+                    ratio = 1200 / w
+                    image = image.resize((1200, int(h * ratio)), Image.LANCZOS)
+                image.save(full_path, quality=85, optimize=True)
                 local_paths.append(local_path)
             except OSError as e:
                 logger.debug("ocr.save_failed", path=full_path, error=str(e)[:60])
