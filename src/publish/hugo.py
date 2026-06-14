@@ -206,7 +206,7 @@ relevance: {post.relevance_score or 0}
         if config_path.exists():
             return
 
-        config_content = """baseURL = "https://www.evconduit.com/"
+        config_content = """baseURL = "https://www.evconduit.com/news/"
 languageCode = "en-us"
 title = "EV Conduit — XPeng News & Community Intelligence"
 theme = "evconduit"

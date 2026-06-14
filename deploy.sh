@@ -30,13 +30,13 @@ if [ ! -d "$NAS_MOUNT/evconduit-news" ]; then
     fi
 fi
 
-# Build Hugo site if needed
-if [ ! -f "$PUBLIC_DIR/index.html" ]; then
-    echo "Building Hugo site..."
-    cd "$SCRIPT_DIR/output"
-    hugo --minify
-    cd "$SCRIPT_DIR"
-fi
+# Always rebuild Hugo in production mode with correct baseURL
+echo "Building Hugo site (production, baseURL: /news/)..."
+cd "$SCRIPT_DIR/output"
+rm -rf public/
+hugo --minify --environment production --baseURL "https://www.evconduit.com/news/"
+cd "$SCRIPT_DIR"
+echo "Build complete."
 
 # Create target directory on NAS
 mkdir -p "$NAS_PATH"
