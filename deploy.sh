@@ -30,12 +30,14 @@ if [ ! -d "$NAS_MOUNT/evconduit-news" ]; then
     fi
 fi
 
-# Always rebuild Hugo in production mode with correct baseURL
+# Always rebuild Hugo in production mode (via Docker, no local install needed)
 echo "Building Hugo site (production, baseURL: /news/)..."
-cd "$SCRIPT_DIR/output"
-rm -rf public/
-hugo --minify --environment production --baseURL "https://www.evconduit.com/news/"
-cd "$SCRIPT_DIR"
+docker run --rm \
+    --user "$(id -u):$(id -g)" \
+    -v "$SCRIPT_DIR/output:/src" \
+    -v "$SCRIPT_DIR/hugo/themes:/src/themes" \
+    hugomods/hugo:latest \
+    hugo --minify --environment production --baseURL "https://www.evconduit.com/news/"
 echo "Build complete."
 
 # Create target directory on NAS
