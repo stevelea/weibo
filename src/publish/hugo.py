@@ -156,9 +156,11 @@ relevance: {post.relevance_score or 0}
             except (json.JSONDecodeError, TypeError):
                 pass
 
-        # Full translated content
+        # Full translated content (wrapped in <div> to avoid Hugo Goldmark buffer boundary bug)
         if post.content_en:
+            lines.append('<div class="post-body">')
             lines.append(post.content_en)
+            lines.append('</div>')
             lines.append("")
 
         # Source attribution

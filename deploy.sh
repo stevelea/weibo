@@ -45,7 +45,7 @@ mkdir -p "$NAS_PATH"
 
 # Sync to NAS
 echo "Syncing $PUBLIC_DIR/ → $NAS_PATH/"
-rsync -av --delete "$PUBLIC_DIR/" "$NAS_PATH/"
+rsync -rltDv --delete --no-perms --no-owner --no-group "$PUBLIC_DIR/" "$NAS_PATH/"
 
 # Cleanup old images (keep 90 days)
 find "$SCRIPT_DIR/output/static/images" -type f -mtime +90 -delete 2>/dev/null || true
