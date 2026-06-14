@@ -8,7 +8,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PUBLIC_DIR="$SCRIPT_DIR/output/public"
 
 # evconduit.com server (use Tailscale IP or hostname)
-EV_HOST="${EV_HOST:-evconduit}"
+EV_HOST="${EV_HOST:-100.113.60.59}"
 EV_USER="${EV_USER:-root}"
 EV_PATH="${EV_PATH:-/mnt/nas-backup/evconduit-news}"
 
