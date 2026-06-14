@@ -235,6 +235,7 @@ class ImageCaptioner:
                     ),
                     Post.ai_processed == True,  # noqa: E712
                 )
+                .order_by(Post.published_at.desc())
                 .limit(limit)
             )
             posts = list(result.scalars().all())
