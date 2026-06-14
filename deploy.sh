@@ -37,6 +37,18 @@ rsync -rltDv --delete --no-perms --no-owner --no-group --no-times --ignore-error
 # Cleanup old images locally (keep 90 days)
 find "$SCRIPT_DIR/output/static/images" -type f -mtime +90 -delete 2>/dev/null || true
 
+# Warm Cloudflare cache for recently published pages
+echo "Warming Cloudflare cache..."
+find "$PUBLIC_DIR/posts" -name "index.html" -mmin -15 | while read -r post; do
+    rel_url="/news${post#$PUBLIC_DIR}"
+    rel_url="${rel_url%/index.html}/"
+    curl -s -o /dev/null "https://www.evconduit.com${rel_url}" &
+done
+# Also warm the homepage
+curl -s -o /dev/null "https://www.evconduit.com/news/" &
+wait
+echo "Cache warmed."
+
 FILE_COUNT=$(find "$NFS_TARGET" -type f | wc -l | tr -d ' ')
 SIZE=$(du -sh "$NFS_TARGET" | awk '{print $1}')
 echo "Deployed $FILE_COUNT files ($SIZE) → https://www.evconduit.com/news/"
