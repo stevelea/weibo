@@ -138,3 +138,16 @@ class Database:
                 post.published_to_site = True
                 post.published_at_site = datetime.datetime.utcnow()
                 await session.commit()
+
+    async def cleanup_old_posts(self, days: int = 90) -> list[Post]:
+        """Delete posts older than `days` and return them for file cleanup."""
+        cutoff = datetime.datetime.utcnow() - datetime.timedelta(days=days)
+        async with self.session_factory() as session:
+            result = await session.execute(
+                select(Post).where(Post.published_at < cutoff)
+            )
+            posts = list(result.scalars().all())
+            for post in posts:
+                await session.delete(post)
+            await session.commit()
+            return posts

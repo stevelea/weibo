@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import asyncio
+import json
 import os
 import signal
 import sys
 import time
+from pathlib import Path
 
 import schedule
 import structlog
@@ -82,6 +84,25 @@ class Pipeline:
             # Phase 5: Publish to Hugo
             pub_count = await self.publisher.publish(self.db)
             logger.info("cycle.publish_done", posts_published=pub_count)
+
+            # Phase 6: Cleanup posts older than 90 days
+            old_posts = await self.db.cleanup_old_posts(days=90)
+            if old_posts:
+                for old in old_posts:
+                    slug = self.publisher._slugify(old.title_en or "untitled", old.weibo_id)
+                    # Delete markdown file
+                    md_path = self.publisher.posts_dir / f"{slug}.md"
+                    md_path.unlink(missing_ok=True)
+                    # Delete local images
+                    if old.image_local_paths:
+                        try:
+                            paths = json.loads(old.image_local_paths)
+                            for p in paths:
+                                if p:
+                                    (Path("/output/static") / p.lstrip("/")).unlink(missing_ok=True)
+                        except Exception:
+                            pass
+                logger.info("cycle.cleanup_done", posts_deleted=len(old_posts))
 
         except Exception:
             logger.exception("cycle.failed")
