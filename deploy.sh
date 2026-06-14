@@ -11,6 +11,8 @@ PUBLIC_DIR="$SCRIPT_DIR/output/public"
 EV_HOST="${EV_HOST:-100.113.60.59}"
 EV_USER="${EV_USER:-root}"
 EV_PATH="${EV_PATH:-/mnt/volume-ssd/evconduit-news}"
+EV_KEY="${EV_KEY:-$HOME/.ssh/id_ed25519_evconduit}"
+SSH_OPTS="-o StrictHostKeyChecking=no -i $EV_KEY"
 
 # Always rebuild Hugo in production mode (via Docker, no local install needed)
 echo "Building Hugo site (production, baseURL: /news/)..."
@@ -24,9 +26,9 @@ echo "Build complete."
 
 # Sync to evconduit.com via SSH
 echo "Syncing $PUBLIC_DIR/ → $EV_USER@$EV_HOST:$EV_PATH/"
-ssh -o StrictHostKeyChecking=no "$EV_USER@$EV_HOST" "mkdir -p $EV_PATH"
+ssh $SSH_OPTS "$EV_USER@$EV_HOST" "mkdir -p $EV_PATH"
 rsync -avz --delete \
-    -e "ssh -o StrictHostKeyChecking=no" \
+    -e "ssh $SSH_OPTS" \
     "$PUBLIC_DIR/" \
     "$EV_USER@$EV_HOST:$EV_PATH/"
 
