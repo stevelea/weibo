@@ -93,8 +93,10 @@ relevance: {post.relevance_score or 0}
                     except (json.JSONDecodeError, TypeError):
                         pass
 
+                base_path = os.environ.get("SITE_BASE_PATH", "")
                 for i, img_url in enumerate(urls[:4]):
-                    src = local_paths[i] if i < len(local_paths) and local_paths[i] else img_url
+                    raw_src = local_paths[i] if i < len(local_paths) and local_paths[i] else img_url
+                    src = f"{base_path}{raw_src}" if raw_src.startswith("/images/") else raw_src
                     caption = captions[i] if i < len(captions) else ""
                     alt = caption if caption else "Weibo image"
                     if caption:

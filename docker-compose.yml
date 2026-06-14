@@ -42,6 +42,7 @@ services:
       - RSSHUB_BASE_URL=http://rsshub:1200
       - DATABASE_URL=sqlite+aiosqlite:///data/weibo.db
       - HUGO_CONTENT_DIR=/output/content
+      - SITE_BASE_PATH=/news
       - LOG_LEVEL=info
       - TZ=Asia/Shanghai
     volumes:
