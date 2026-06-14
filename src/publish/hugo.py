@@ -29,6 +29,22 @@ from src.store.models import Database, Post
 
 logger = structlog.get_logger()
 
+# Map internal source codes to display names
+SOURCE_LABELS = {
+    "rsshub": "Weibo",
+    "supertopic": "超话",
+    "bilibili": "Bilibili",
+    "zhihu": "Zhihu",
+    "crawl": "Weibo",
+}
+SOURCE_SLUGS = {
+    "rsshub": "weibo",
+    "supertopic": "supertopic",
+    "bilibili": "bilibili",
+    "zhihu": "zhihu",
+    "crawl": "weibo",
+}
+
 
 class HugoPublisher:
     """Publishes processed Weibo posts as Hugo markdown files."""
@@ -53,15 +69,8 @@ class HugoPublisher:
         """Build YAML frontmatter for a Hugo post."""
         date_str = post.published_at.strftime("%Y-%m-%dT%H:%M:%S+08:00")
         summary = (post.summary_en or "").replace('"', "'")
-        # Map internal source codes to display names and taxonomy values
-        source_map = {
-            "rsshub": ("Weibo", "weibo"),
-            "supertopic": ("超话", "supertopic"),
-            "bilibili": ("Bilibili", "bilibili"),
-            "zhihu": ("Zhihu", "zhihu"),
-            "crawl": ("Weibo", "weibo"),
-        }
-        source_name, source_slug = source_map.get(post.source, ("Weibo", "weibo"))
+        source_name = SOURCE_LABELS.get(post.source, "Weibo")
+        source_slug = SOURCE_SLUGS.get(post.source, "weibo")
 
         fm = f"""---
 title: "{post.title_en or 'Untitled'}"
@@ -160,9 +169,10 @@ relevance: {post.relevance_score or 0}
                         lines.append(f'<img src="{poster_src}" alt="Video thumbnail" loading="lazy">')
                     lines.append('<span class="video-play">▶</span>')
                     lines.append('</a>')
+                    watch_label = SOURCE_LABELS.get(post.source, "Weibo")
                     lines.append(
                         '<p><a href="' + vp_url + '" target="_blank" rel="noopener">'
-                        '🎬 Watch video on Weibo →</a></p>'
+                        f'🎬 Watch video on {watch_label} →</a></p>'
                     )
                     lines.append('</div>')
                 if vp_urls:

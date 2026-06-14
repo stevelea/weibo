@@ -5,11 +5,11 @@
 
   <!-- Source filter bar -->
   <div class="source-filters">
-    <a href="/" class="source-filter active">All</a>
-    <a href="/sources/weibo/" class="source-filter weibo">Weibo</a>
-    <a href="/sources/supertopic/" class="source-filter supertopic">超话</a>
-    <a href="/sources/bilibili/" class="source-filter bilibili">Bilibili</a>
-    <a href="/sources/zhihu/" class="source-filter zhihu">Zhihu</a>
+    <a href="{{ $.Site.BaseURL }}" class="source-filter active">All</a>
+    <a href="{{ $.Site.BaseURL }}sources/weibo/" class="source-filter weibo">Weibo</a>
+    <a href="{{ $.Site.BaseURL }}sources/supertopic/" class="source-filter supertopic">超话</a>
+    <a href="{{ $.Site.BaseURL }}sources/bilibili/" class="source-filter bilibili">Bilibili</a>
+    <a href="{{ $.Site.BaseURL }}sources/zhihu/" class="source-filter zhihu">Zhihu</a>
   </div>
 
   {{ $pages := .Site.RegularPages }}
