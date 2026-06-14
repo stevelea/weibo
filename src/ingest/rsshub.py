@@ -324,5 +324,45 @@ class RSSHubIngestor:
         logger.info("rsshub.bilibili_ingested", account=account_name, new_posts=new_count)
         return new_count
 
+    async def ingest_zhihu_daily(self, db: Database) -> int:
+        """Ingest Zhihu daily hot topics. Returns count of new posts."""
+        url = f"{self.config.rsshub_base_url}/zhihu/daily"
+        try:
+            resp = await self.client.get(url)
+            resp.raise_for_status()
+        except httpx.HTTPError as e:
+            logger.warning("rsshub.zhihu_daily_failed", error=str(e))
+            return 0
+
+        feed = feedparser.parse(resp.text)
+        if not feed.entries:
+            return 0
+
+        new_count = 0
+        for entry in feed.entries[:5]:  # Limit to top 5 daily topics
+            post_id = entry.get("id", entry.get("link", ""))
+            if not post_id:
+                continue
+            content = entry.get("title", "") + "\n" + (entry.get("summary", entry.get("description", "")))
+            content = re.sub(r"<[^>]+>", "", content).strip()
+            if not content:
+                continue
+            post = Post(
+                weibo_id=f"zhihu-{post_id}",
+                source="zhihu",
+                author_name="知乎日报",
+                author_uid="daily",
+                content=content,
+                content_hash=Post.compute_hash(content),
+                url=entry.get("link", f"https://www.zhihu.com/question/{post_id}"),
+                published_at=datetime.datetime.utcnow(),
+            )
+            inserted = await db.insert_post(post)
+            if inserted:
+                new_count += 1
+
+        logger.info("rsshub.zhihu_daily_ingested", new_posts=new_count)
+        return new_count
+
     async def close(self) -> None:
         await self.client.aclose()

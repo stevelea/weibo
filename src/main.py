@@ -63,6 +63,10 @@ class Pipeline:
                 bl_count += await self.rsshub.ingest_bilibili(self.db, bl.uid, bl.name)
             logger.info("cycle.bilibili_done", posts_ingested=bl_count)
 
+            # Phase 1d: Ingest from Zhihu (知乎日报)
+            zh_count = await self.rsshub.ingest_zhihu_daily(self.db)
+            logger.info("cycle.zhihu_done", posts_ingested=zh_count)
+
             # Phase 2: Ingest from crawl4weibo (keyword search)
             crawl_count = await self.crawler.ingest(self.db)
             logger.info("cycle.crawl_done", posts_ingested=crawl_count)
