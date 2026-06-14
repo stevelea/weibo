@@ -1,8 +1,8 @@
 ---
 title: "EV Conduit"
-description: "Real-time XPeng news and community intelligence"
+description: "XPeng intelligence from Chinese social media"
 ---
 
-## Latest XPeng News from the Weibo Community
+## XPeng Intelligence from Chinese Social Media
 
-Curated, translated, and verified news about XPeng Motors — cars, robots, flying vehicles, and more.
+Curated, translated, and verified content about XPeng Motors — cars, VLA autonomous driving, robots, and flying vehicles — sourced from Weibo, Bilibili, and Zhihu.

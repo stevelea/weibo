@@ -1,6 +1,6 @@
 baseURL = "https://www.evconduit.com/news/"
 languageCode = "en-us"
-title = "EV Conduit — XPeng News & Community Intelligence"
+title = "EV Conduit — XPeng Intelligence from Chinese Social Media"
 theme = "evconduit"
 
 [params]

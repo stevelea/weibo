@@ -34,8 +34,7 @@
       "active",
       "bilibili",
       "car",
-      "empty-state",
-      "general",
+      "financial",
       "header-inner",
       "hero",
       "logo",
@@ -63,7 +62,8 @@
       "超话"
     ],
     "ids": [
-      "latest-xpeng-news-from-the-weibo-community"
+      "latest-xpeng-news-from-the-weibo-community",
+      "xpeng-intelligence-from-chinese-social-media"
     ]
   }
 }

@@ -203,6 +203,10 @@ class RSSHubIngestor:
             if hasattr(entry, "published_parsed") and entry.published_parsed:
                 published = datetime.datetime(*entry.published_parsed[:6])
 
+            # Skip posts older than 7 days
+            if (datetime.datetime.utcnow() - published).days > 7:
+                continue
+
             raw_html = entry.get("summary", entry.get("description", ""))
             content = re.sub(r"<[^>]+>", "", raw_html).strip()
 
@@ -298,6 +302,10 @@ class RSSHubIngestor:
             published = datetime.datetime.utcnow()
             if hasattr(entry, "published_parsed") and entry.published_parsed:
                 published = datetime.datetime(*entry.published_parsed[:6])
+
+            # Skip posts older than 7 days
+            if (datetime.datetime.utcnow() - published).days > 7:
+                continue
 
             raw_html = entry.get("summary", entry.get("description", ""))
             content = entry.get("title", "") + "\n" + raw_html
