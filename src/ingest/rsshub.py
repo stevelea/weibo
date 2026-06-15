@@ -383,5 +383,50 @@ class RSSHubIngestor:
         logger.info("rsshub.zhihu_daily_ingested", new_posts=new_count)
         return new_count
 
+    async def ingest_native_feed(self, db: Database, feed_url: str, source_name: str) -> int:
+        """Ingest posts from a native RSS/Atom feed. Returns count of new posts."""
+        try:
+            resp = await self.client.get(feed_url)
+            resp.raise_for_status()
+        except httpx.HTTPError as e:
+            logger.warning("rsshub.native_feed_failed", feed=feed_url, error=str(e))
+            return 0
+
+        feed = feedparser.parse(resp.text)
+        if not feed.entries:
+            return 0
+
+        new_count = 0
+        for entry in feed.entries[:5]:  # Limit per feed per cycle
+            post_id = entry.get("id", entry.get("link", ""))
+            if not post_id:
+                continue
+
+            published = datetime.datetime.utcnow()
+            if hasattr(entry, "published_parsed") and entry.published_parsed:
+                published = datetime.datetime(*entry.published_parsed[:6])
+
+            content = entry.get("title", "") + "\n" + (entry.get("summary", entry.get("description", "")))
+            content = re.sub(r"<[^>]+>", "", content).strip()
+            if not content:
+                continue
+
+            post = Post(
+                weibo_id=f"feed-{post_id}",
+                source="feed",
+                author_name=source_name,
+                author_uid=feed_url,
+                content=content,
+                content_hash=Post.compute_hash(content),
+                url=entry.get("link", feed_url),
+                published_at=published,
+            )
+            inserted = await db.insert_post(post)
+            if inserted:
+                new_count += 1
+
+        logger.info("rsshub.native_feed_ingested", feed=source_name, new_posts=new_count)
+        return new_count
+
     async def close(self) -> None:
         await self.client.aclose()

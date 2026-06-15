@@ -69,6 +69,14 @@ class Pipeline:
             zh_count = await self.rsshub.ingest_zhihu_daily(self.db)
             logger.info("cycle.zhihu_done", posts_ingested=zh_count)
 
+            # Phase 1e: Ingest from external RSS feeds (ChinaPEV, CarNewsChina, etc.)
+            fd_count = 0
+            for fd in self.config.external_feeds:
+                fd_count += await self.rsshub.ingest_native_feed(
+                    self.db, fd["url"], fd["name"]
+                )
+            logger.info("cycle.feeds_done", posts_ingested=fd_count)
+
             # Phase 2: Ingest from crawl4weibo (keyword search)
             crawl_count = await self.crawler.ingest(self.db)
             logger.info("cycle.crawl_done", posts_ingested=crawl_count)

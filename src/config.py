@@ -42,6 +42,7 @@ class Config:
     poll_interval_minutes: int = 10
     supertopics: list[dict] = field(default_factory=list)
     bilibili_accounts: list[Account] = field(default_factory=list)
+    external_feeds: list[dict] = field(default_factory=list)
 
 
 def load_config(config_dir: str | None = None) -> Config:
@@ -120,5 +121,12 @@ def load_config(config_dir: str | None = None) -> Config:
                 )
                 for a in data.get("accounts", [])
             ]
+
+    feeds_path = base / "feeds.yaml"
+    if feeds_path.exists():
+        with open(feeds_path) as f:
+            data = yaml.safe_load(f)
+        if data:
+            config.external_feeds = data.get("feeds", [])
 
     return config

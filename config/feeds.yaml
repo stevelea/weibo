@@ -1,0 +1,21 @@
+# External native RSS feeds to monitor for XPeng-related content
+# Unlike Weibo/Bilibili accounts, these are direct RSS/Atom feeds
+
+feeds:
+  - url: "https://www.chinapev.com/feed/"
+    name: "ChinaPEV"
+    category: ev_media
+    priority: medium
+
+  - url: "https://carnewschina.com/feed/"
+    name: "CarNewsChina"
+    category: media
+    priority: high
+
+# Add more feeds:
+# - url: "https://example.com/feed/"
+#   name: "Source Name"
+#   category: ev_media
+#   priority: medium
+
+poll_interval_minutes: 30

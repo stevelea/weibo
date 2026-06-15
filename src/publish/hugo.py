@@ -36,6 +36,7 @@ SOURCE_LABELS = {
     "bilibili": "Bilibili",
     "zhihu": "Zhihu",
     "crawl": "Weibo",
+    "feed": "News Feed",
 }
 SOURCE_SLUGS = {
     "rsshub": "weibo",
@@ -43,6 +44,7 @@ SOURCE_SLUGS = {
     "bilibili": "bilibili",
     "zhihu": "zhihu",
     "crawl": "weibo",
+    "feed": "news-feed",
 }
 
 
