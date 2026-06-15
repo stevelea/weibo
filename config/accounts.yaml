@@ -43,6 +43,11 @@ accounts:
     category: community
     priority: medium
 
+  - uid: "2826095701"
+    name: "烟隐烟隐"
+    category: community
+    priority: high
+
   # XPeng executives
   - uid: "7926776135"
     name: "XP-Candice婷婷"
