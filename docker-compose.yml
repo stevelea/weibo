@@ -15,13 +15,14 @@ services:
       - "1200:1200"
     environment:
       - CACHE_TYPE=memory
-      - CACHE_EXPIRE=300
-      - REQUEST_TIMEOUT=30
+      - CACHE_EXPIRE=900
+      - REQUEST_TIMEOUT=60
       - NODE_ENV=production
       - ZHIHU_COOKIES=z_c0="2|1:0|10:1781433898|4:z_c0|92:Mi4xMWF3VWNBWUFBQUQ0RTlqNTM0RnhIQ1lBQUFCZ0FsVk44ZE1iYXdBZjFsUmh2U09DQk1tRWVZU2wzaVFpMm5ocXV3|3a7a453c17350f3523d23f6e7942f1aa73f06775888d15212b36372e3c338ef6"
+      - WEIBO_COOKIES=SUB=_2A25HNUN8DeRhGeJO4lcW-S_Eyz2IHXVkS9q0rDV8PUJbkNAbLU3HkW1NdNlrJWnpOH0DCX5W3sujZ-EkvqTirNN-
     healthcheck:
-      test: ["CMD", "curl", "-sf", "http://localhost:1200/weibo/user/5710264970"]
-      interval: 60s
+      test: ["CMD", "curl", "-sf", "http://localhost:1200/"]
+      interval: 120s
       timeout: 10s
       retries: 3
       start_period: 60s
@@ -43,6 +44,7 @@ services:
       - RSSHUB_BASE_URL=http://rsshub:1200
       - DATABASE_URL=sqlite+aiosqlite:///data/weibo.db
       - HUGO_CONTENT_DIR=/output/content
+      - CYCLE_INTERVAL_MINUTES=20
       - SITE_BASE_PATH=/news
       - LOG_LEVEL=info
       - TZ=Asia/Shanghai

@@ -7,9 +7,14 @@ feeds:
     category: ev_media
     priority: medium
 
-  - url: "https://carnewschina.com/feed/"
+  - url: "https://carnewschina.com/topics/xpeng/feed/"
     name: "CarNewsChina"
     category: media
+    priority: high
+
+  - url: "https://cnevpost.com/xpeng/feed/"
+    name: "CnEVPost"
+    category: ev_media
     priority: high
 
 # Add more feeds:

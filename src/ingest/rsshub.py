@@ -171,8 +171,8 @@ class RSSHubIngestor:
                 if inserted:
                     new_count += 1
 
-            # Small delay between accounts to be gentle on RSSHub
-            await httpx.AsyncClient().aclose()  # no-op, just a visual separator
+            # Rate-limit: 2s delay between accounts to avoid Weibo rate limiting
+            await asyncio.sleep(2)
 
         logger.info("rsshub.ingest_complete", accounts_checked=len(self.config.accounts), new_posts=new_count)
         return new_count
